@@ -58,14 +58,14 @@ train$subjectID = as.factor(trainSubjectIDs$V1)
 
 ## combine training and test
 alldata = rbind(train,test)
-alldata = alldata[,c(67,68,1:66)]
 
 # keep only mean and std cols
 alldata=alldata[,maskMeanStd]
+alldata = alldata[,c(67,68,1:66)]
 
 # make tidy data
 
-tidydata=aggregate(alldata[,3:68],by=list(alldata$activity,alldata$subjectID),mean)
+tidydata=aggregate(alldata[,3:68],by=list(activity=alldata$activity,subject=alldata$subjectID),mean)
 a=colnames(tidydata)
 colnames(tidydata)=c("activity","subject",a[3:68])
 
