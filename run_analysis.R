@@ -2,6 +2,9 @@
 # load activity names
 activities=read.table("UCI HAR Dataset/activity_labels.txt",
                            col.names = c("id","activity"),header = FALSE)
+activities$activity=tolower(activities$activity)
+activities$activity=gsub("_up","Up",activities$activity)
+activities$activity=gsub("_do","Do",activities$activity)
 
 # load feature names
 features=read.table("UCI HAR Dataset/features.txt",
@@ -67,7 +70,7 @@ s=split(alldata,alldata$subjectID)
 subject=sapply(s,function(x) colMeans(x[1:66]))
 subject=subject[,order(as.numeric(colnames(subject)))]
 
-colnames(subject)=gsub("([0-9]+)","Subject\\1",colnames(subject))
+colnames(subject)=gsub("([0-9]+)","subject\\1",colnames(subject))
 
 tidydata=cbind(activity,subject)
 
