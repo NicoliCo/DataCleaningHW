@@ -48,9 +48,9 @@ testActivityLabels = read.table("UCI HAR Dataset/test/y_test.txt", header = FALS
 
 ## merge activity labels
 tmp = merge(testActivityLabels,activities,by.y="id",by.x="V1")
-test$activity = tmp$activity
+test$activity = as.factor(tmp$activity)
 tmp = merge(trainActivityLabels,activities,by.y="id",by.x="V1")
-train$activity = tmp$activity
+train$activity = as.factor(tmp$activity)
 
 ## integrate subject IDs
 test$subjectID = as.factor(testSubjectIDs$V1)
@@ -58,20 +58,15 @@ train$subjectID = as.factor(trainSubjectIDs$V1)
 
 ## combine training and test
 alldata = rbind(train,test)
+alldata = alldata[,c(67,68,1:66)]
 
 # keep only mean and std cols
 alldata=alldata[,maskMeanStd]
 
 # make tidy data
-s=split(alldata,alldata$activity)
-activity=sapply(s,function(x) colMeans(x[1:66]))
 
-s=split(alldata,alldata$subjectID)
-subject=sapply(s,function(x) colMeans(x[1:66]))
-subject=subject[,order(as.numeric(colnames(subject)))]
-
-colnames(subject)=gsub("([0-9]+)","subject\\1",colnames(subject))
-
-tidydata=cbind(activity,subject)
+tidydata=aggregate(alldata[,3:68],by=list(alldata$activity,alldata$subjectID),mean)
+a=colnames(tidydata)
+colnames(tidydata)=c("activity","subject",a[3:68])
 
 tidydata

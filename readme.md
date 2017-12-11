@@ -9,4 +9,6 @@ The script run_analysis.R reads training and test data from the "UCI HAR Dataset
 
 This data set is called "alldata"
 
-A tidy data set is then created for the mean of each variable for each activity and each subject. The rows are the variable names, the columns are the activity and subject.
+A tidy data set is then created for the mean of each variable for each combination of activity and subject.
+
+The tidy data set is called "tidydata" and is returned by the script
