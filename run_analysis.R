@@ -12,8 +12,8 @@ features=read.table("UCI HAR Dataset/features.txt",
                     colClasses = c("numeric","character"))
 features = features$feature
 # save columns that are mean() or std()
-maskMeanStd = (grepl("mean()",features,fixed = TRUE)|
-                   grepl("std()",features,fixed=TRUE))
+maskMeanStd = (grepl("mean()", features, fixed = TRUE) |
+                   grepl("std()", features, fixed = TRUE))
 
 # make feature names easier to read
 features = gsub("[()]","",features)
@@ -61,12 +61,10 @@ alldata = rbind(train,test)
 
 # keep only mean and std cols
 alldata=alldata[,maskMeanStd]
-alldata = alldata[,c(67,68,1:66)]
+alldata = alldata[,c(ncol-1,ncol,1:ncol-2)]
 
 # make tidy data
 
-tidydata=aggregate(alldata[,3:68],by=list(activity=alldata$activity,subject=alldata$subjectID),mean)
-a=colnames(tidydata)
-colnames(tidydata)=c("activity","subject",a[3:68])
+tidydata=aggregate(alldata[,3:ncol],by=list(activity=alldata$activity,subject=alldata$subjectID),mean)
 
 tidydata
